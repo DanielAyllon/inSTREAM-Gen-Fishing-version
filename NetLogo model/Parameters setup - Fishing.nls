@@ -1,0 +1,229 @@
+to setparameters
+
+  set calibration? false
+
+;;;;;;;;;;;;;;;;;;;; SETUP HYDRAULICS;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
+
+  if ModelHydraulics?
+   [
+     set depth-file-name    "Lookup-Tables-Depth.csv"        ; Flow-depth lookup tables by cell
+     set velocity-file-name "Lookup-Tables-Vel.csv"         ; Flow-velocity lookup tables by cell 
+   ]
+
+
+;;;;;;;;;;;;;;;;;;;; SETUP REACH ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  
+  
+  set initial-date "1993-10-01"   ;; First day of simulation
+  set timestep-scale 1            ;; In the first version, the model will use weekly time steps
+  set space-scale 10              ;; A patch is 10 cm wide  
+  set siteLatitude 42.88508696    ;; In degrees
+  set reachLength 3 * 101.8 * 100     ;; In cm
+  
+  set habShelterSpeedFrac 0.3       ;; Value from insTREAM report (Railsback et al. 2009)  
+;  set habDriftConc 5 * (10 ^ -10)   ;; For example (around max value reported in Rosenfeld & Taylor 2009) (In g/cm3)
+;  set habDriftRegenDist 300         ;; For example, from insTREAM report (Railsback et al. 2009)
+;  set habSearchProd 10 * (10 ^ -7)  ;; For example, from insTREAM report (Railsback et al. 2009)  
+;  set habPreyEnergyDensity 2500     ;; Value from insTREAM report (Railsback et al. 2009) (In j/g)
+  set fishEnergyDensity 5900        ;; Value from insTREAM report (Railsback et al. 2009) (In j/g)
+  
+  set habMaxSpawnFlow  4.5           ;; Estimated from Ayllon et al. (2012) and other literature
+   
+
+     
+;;;;;;;;;;;;;;;;;;;; SETUP POPULATION PARAMETERS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+  set init-N                 3 * 232                                                                                          
+  set prop-Age0              0.73                        
+  set prop-Age1              0.19 
+  set prop-Age2              0.06
+  set prop-Age3              0.008
+  set prop-Age4              0.009
+  set prop-Age5Plus          0.003                                          
+  set fishLengthMeanAge0     6.5 
+  set fishLengthMeanAge1     13.4  
+  set fishLengthMeanAge2     17.1 
+  set fishLengthMeanAge3     22.5
+  set fishLengthMeanAge4     27.5
+  set fishLengthMeanAge5Plus 36.5             
+  set fishLengthSdAge0       0.7
+  set fishLengthSdAge1       1.2
+  set fishLengthSdAge2       1.2
+  set fishLengthSdAge3       1.4
+  set fishLengthSdAge4       1.7
+  set fishLengthSdAge5Plus   1.6
+  set fishEmergenceDateMean  91
+  set mutationalVarParam     10 ^ -3             ;; Value from Vincenzi et al. (2012)
+;  set mutationFactor         0
+  
+  set fishNewLengthMean               2.3        ;;  Guestimated based on literature data   
+  set fishNewLengthVar                0.15 ^ 2   ;;  
+  set fishNewLengthHeritability       0.18       ;;  From Serbezov et al. (2010)
+  set fishMinNewLength                1          ;;  Guestimated based on literature data   
+  set fishMaxNewLength                3.5        ;;  Guestimated based on literature data                                                          
+  set fishSpawnMinLengthMeanM         16.7       ;;  Site-specific values for this study site (Parra et al. 2014)
+  set fishSpawnMinLengthMeanF         16.7       ;;  Site-specific values for this study site (Parra et al. 2014)                                                          
+  set fishSpawnMinLengthVarM          1.5        ;;     
+  set fishSpawnMinLengthVarF          1.5        ;;                                                         
+  set fishSpawnMinLengthHeritability  0.18       ;;  By now, all heretability values are set the same                                                           
+  set fishNeutralTraitMean            0.7        ;;  By now, just made up                                                      
+  set fishNeutralTraitVar             0.05       ;;  By now, just made up                                                    
+  set fishNeutralTraitHeritability    0.18       ;;  By now, all heretability values are set the same                         
+
+  
+
+;;;;;;;;;;;;;;;;;;;; SETUP TROUT PARAMETERS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+  set fishFitnessHorizon 90   ;; Value from insTREAM report (Railsback et al. 2009)
+ 
+  set fishMoveDistParamA 20   ;; Values from insTREAM report (Railsback et al. 2009)
+  set fishMoveDistParamB 2
+ 
+  set fishCmaxParamA 0.628    ;; Values from insTREAM report (Railsback et al. 2009)
+  set fishCmaxParamB -0.3 
+  set fishCmaxTempT1 0
+  set fishCmaxTempT2 2
+  set fishCmaxTempT3 10
+  set fishCmaxTempT4 22
+  set fishCmaxTempT5 23
+  set fishCmaxTempT6 25
+  set fishCmaxTempT7 100
+  set fishCmaxTempF1 0.05
+  set fishCmaxTempF2 0.05
+  set fishCmaxTempF3 0.5
+  set fishCmaxTempF4 1
+  set fishCmaxTempF5 0.8
+  set fishCmaxTempF6 0
+  set fishCmaxTempF7 0
+  
+  set fishMaxSwimParamA 2.8      ;; Values from insTREAM report (Railsback et al. 2009)
+  set fishMaxSwimParamB 21.0
+  set fishMaxSwimParamC -0.0029
+  set fishMaxSwimParamD 0.084
+  set fishMaxSwimParamE 0.37
+ 
+  set fishDetectDistParamA 4.0   ;; Values from insTREAM report (Railsback et al. 2009)
+  set fishDetectDistParamB 2.0
+ 
+  set fishCaptureParam1 1.6      ;; Values from insTREAM report (Railsback et al. 2009)
+  set fishCaptureParam9 0.5
+ 
+  set fishRespParamA 30          ;; Values from insTREAM report (Railsback et al. 2009)
+  set fishRespParamB 0.784
+  set fishRespParamC 0.0693
+  set fishRespParamD 0.03
+ 
+  set fishSearchArea 20000       ;; From insTREAM report (Railsback et al. 2009)
+ 
+  set fishWeightParamA 0.01057   ;; Site-specific values for this study site (Almodovar et al. 2006)
+  set fishWeightParamB 3.021
+ 
+  set fishPiscivoryLength 17     ;; Guestimated for the study population based on existing literature
+ 
+  set fishSpawnMinAge         365    ;;  Only 0+ trout cannot spawn
+  set fishSpawnMinCond        0.95   ;;  Value from insTREAM report (Railsback et al. 2009)
+  set fishSpawnStartDate      305    ;;  Site-specific values for this study site (Almodovar et al. 2006)
+  set fishSpawnEndDate        366
+  set fishSpawnMinTemp        4      ;;  Values from insTREAM report (Railsback et al. 2009)
+  set fishSpawnMaxTemp        12 
+  set fishSpawnMaxFlowChange  0.2    ;;  Values from insTREAM report (Railsback et al. 2009)  
+  set fishSpawnProb           0.1    ;;  The value from insTREAM report (Railsback et al. 2009), 0.04, is VERY LOW!  
+ 
+  set fishSpawnDSuitD1  0      ;;  Values from insTREAM report (Railsback et al. 2009)
+  set fishSpawnDSuitD2  5
+  set fishSpawnDSuitD3  50 
+  set fishSpawnDSuitD4  100
+  set fishSpawnDSuitD5  1000
+  set fishSpawnDSuitS1  0      
+  set fishSpawnDSuitS2  0
+  set fishSpawnDSuitS3  1
+  set fishSpawnDSuitS4  1
+  set fishSpawnDSuitS5  0
+  set fishSpawnVSuitV1  0 
+  set fishSpawnVSuitV2  10
+  set fishSpawnVSuitV3  20
+  set fishSpawnVSuitV4  75
+  set fishSpawnVSuitV5  100
+  set fishSpawnVSuitV6  1000
+  set fishSpawnVSuitS1  0
+  set fishSpawnVSuitS2  0
+  set fishSpawnVSuitS3  1
+  set fishSpawnVSuitS4  1
+  set fishSpawnVSuitS5  0
+  set fishSpawnVSuitS6  0
+  
+  set fishFecundParamA        0.038  ;;  Site-specific values for this study site (Almodovar et al. 2006)
+  set fishFecundParamB        3.01                                                        
+  set fishSpawnEggViability   0.8    ;;  Value from insTREAM report (Railsback et al. 2009)
+  set max-n-males-per-female  4      ;;  Serbezov et al. 2010  
+  set fishSpawnWtLossFraction 0.2    ;;  Value from insTREAM report (Railsback et al. 2009)
+                                                               
+
+
+;;;;;;;;;;;;;;;;;;;; SETUP MORTALITY PARAMETERS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
+
+  set mortFishHiTT1       30     ;; By now, values from insTREAM report (Railsback et al. 2009)
+  set mortFishHiTT9       25.8   
+  set mortFishVelocityV1  1.8    
+  set mortFishVelocityV9  1.4
+  set mortFishStrandD1    -0.3
+  set mortFishStrandD9    0.3
+  set mortFishConditionK1 0.3                                                                      
+  set mortFishConditionK9 0.6      
+;  set mortFishTerrPredMin 0.99
+  set mortFishTerrPredD1  5
+  set mortFishTerrPredD9  150
+  set mortFishTerrPredL1  6                                                     
+  set mortFishTerrPredL9  3                                                               
+  set mortFishTerrPredF1  18
+  set mortFishTerrPredF9  0                                                          
+  set mortFishTerrPredV1  20
+  set mortFishTerrPredV9  100                                                            
+  set mortFishTerrPredH1  500
+  set mortFishTerrPredH9  -100                                                            
+;  set mortFishAqPredMin   0.95
+  set mortFishAqPredP1    1 * (10 ^ -5)
+  set mortFishAqPredP9    2 * (10 ^ -6)     
+  set mortFishAqPredD1    20                                                      
+  set mortFishAqPredD9    5                                                           
+  set mortFishAqPredL1    4
+  set mortFishAqPredL9    8                                                                                
+  set mortFishAqPredF1    18
+  set mortFishAqPredF9    0                                                                
+  set mortFishAqPredT1    6                                                               
+  set mortFishAqPredT9    2    
+ 
+  
+ 
+;;;;;;;;;;;;;;;;;;;; SETUP ANGLING MORTALITY PARAMETERS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
+                                                              
+  set startAnglingSeason           91    ;; Site-specific value for this study site (Almodovar et al. 2006) (julianday)
+  set endAnglingSeason             274   ;; Site-specific value for this study site (Almodovar et al. 2006) (julianday)
+  set mortFishAngleL1              10    ;; By now, values from insTREAM report (Railsback et al. 2013)
+  set mortFishAngleL9              20           
+  set mortFishAngleSuccess         0.014  ;; Site-specific (Almodovar et al. 2006) (exploitation rate [%] * 100 / Angler-hr ha-1 yr-1 * area [m2]) 
+;  set anglePressure                0.22  ;; Site-specific value for this study site (Almodovar et al. 2006) (Angler-hr ha-1 d-1 * stream Width / 10)     
+;  set mortFishAngleSlotLower       19    ;; Site-specific value for this study site (Almodovar et al. 2006)
+;  set mortFishAngleSlotUpper       100   ;; No angling based on slots, just on minimum size
+  set mortFishAngleFracKeptLegal   0.4    ;; Calibrated
+  set mortFishAngleFracKeptIllegal 0.05        
+  set mortFishAngleHookSurvRate    0.8          
+  set anglingEfficiency            3.7    ;; Site-specific value for this study site (Almodovar et al. 2006)
+                                                                                                                       
+
+
+;;;;;;;;;;;;;;;;;;;; SETUP REDD PARAMETERS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
+
+  set mortReddDewaterSurv   0.9       ;; Value from insTREAM report (Railsback et al. 2009)
+  set habShearParamA        0.006     ;; Estimated values from site-specific PHABSIM hydraulic simulations
+  set habShearParamB        0.683                                                        
+  set mortReddScourDepth    15        ;; Value from Crisp et al. (1996). To turn off the scouring mortality function, set this parameter to 10000 cm.
+  set mortReddLoTT1         -0.8      ;; By now, values from insTREAM report (Railsback et al. 2009)
+  set mortReddLoTT9         0
+  set mortReddHiTT1         25
+  set mortReddHiTT9         16
+  set reddSize              1200      ;; Value from insTREAM report for Little Jones Creek (Railsback et al. 2009)
+  set reddDevelParamA       0.00313   ;; Values from Van Winkle et al. (1996)
+  set reddDevelParamB       0.0000307
+  set reddDevelParamC       0.0000934																																																																																																																																													
+
+end
